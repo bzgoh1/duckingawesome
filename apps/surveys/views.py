@@ -113,6 +113,9 @@ def editQuestion(request, survey_id, question_no):
 		if qntype == 'CB' or qntype == 'RB':
 			if form.cleaned_data['choice1'] or form.cleaned_data['choice2'] or form.cleaned_data['choice3'] or form.cleaned_data['choice4']:
 				question.description = form.cleaned_data['description']
+				if question.questiontype == 'TF' or question.questiontype == 'NI':
+					for choice in question.choice_set.all():
+						choice.delete()
 				question.questiontype = qntype
 				question.save()
 				if question.choice_set.filter(choiceno=1):
@@ -173,12 +176,12 @@ def editQuestion(request, survey_id, question_no):
 			question.description = form.cleaned_data['description']
 			question.questiontype = qntype
 			question.save()
-			messages.success(request, u'Your question has been edited.')
 			survey.save()
 			
 			for choice in question.choice_set.all():
 				choice.delete()
 				
+			messages.success(request, u'Your question has been edited.')
 				
 		return redirect('surveys.views.editQuestion', survey_id=survey_id , question_no=question_no,)
 	
