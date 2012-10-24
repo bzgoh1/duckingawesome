@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style type="text/css">
+<!--
+#createSurveyS1{
+	padding: 10px;
+	margin-top: 30px;
+	margin-left: 30px;
+	margin-bottom:30px;
+}
+h1 {
+	margin-bottom: 20px;
+	margin-left:20px;
+	margin-top: 20px;
+	font-weight:bold;
+	font-size:28px;
+}
+label {
+	padding-top:5px;
+	font-weight:bold;
+	padding-right:20px;
+}
+input{
+	padding-top:2px;
+	padding-bottom:2px;
+	padding-right:5px;
+	padding-left:5px;
+}
+
+.fieldWrapper{
+	padding-top:10px;
+	padding-bottom:10px;
+}
+#createSurveyTitle{
+	padding-bottom:20px;
+}
+#id_description{
+	width:30em;
+}
+-->
+</style>
+<h1>Create Survey Title</h1>
+<form action="/surveys/create/" method="post" id="createSurveyS1">
+	{% csrf_token %}
+	<!--{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}-->
+<div id="createSurveyTitle">
+
+{{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ field.id_description.label_tag }}<label>Survey Title</label>: {{ form.description }}
+        <span class="error">
+        	{% for e in form.description.errors %}
+            *{{e}}
+            {% endfor %}
+        </span>
+    </div>
+    </div createSurveyTitle>
+	<input type="submit" value="Next" />
+    <input id="DoneButton" type="button" value="Cancel" onClick="parent.location='/surveys/home'"/>
+</form>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		console.log('Ready');
+	});
+</script>
+
+{% endblock %}

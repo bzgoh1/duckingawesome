@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style type="text/css">
+<!--
+#qnNum{
+	font-weight:bold;
+	margin-top:10px;
+	text-decoration:underline;
+}
+#textboxfield2{
+	width:5em;
+	margin-top:10px;
+	padding:2px;
+	margin-left:20px;	
+}
+h1 {
+	margin-left:20px;
+	margin-top: 20px;
+	font-weight:bold;
+	font-size:28px;
+}
+#id_choice1, #id_choice2, #id_choice3, #id_choice4{
+	width:20em;
+}
+label {
+	padding-top:10px;
+	font-weight:bold;
+	padding-right:20px;
+}
+input{
+	margin-right:10px;
+}
+.fieldWrapper{
+	padding-top:10px;
+	padding-bottom:10px;
+}
+.fieldWrapper li {
+	margin-left: 30px;
+}
+#id_description{
+	width:30em;
+}
+#textboxfield{
+	width:50em;
+	margin-top:10px;
+	padding:2px;	
+}
+#columnleft{
+	float:left;
+	width:120px;
+	height:400px;
+	border:#000 solid 2px;
+	margin-right:10px;
+	margin-bottom:20px;
+	padding:20px;
+}
+#columnright{
+	border:#000 solid 2px;
+	width:740px;
+	float:right;
+	height:400px;
+	margin-bottom:20px;
+	padding:20px;
+}
+li a, li a:visited{
+	color:#006;
+	text-decoration:none;
+}
+li a:hover{
+	color:#F60;
+}
+#surveyTitle{
+	font-weight:bold;
+	color:#000;
+}
+#cancelB,#submitB, #radio, #text, #check, #number{
+	padding-top:2px;
+	padding-bottom:2px;
+	padding-right:5px;
+	padding-left:5px;
+	margin-right:5px;
+}
+#responseB{
+	margin-top:10px;
+	font-weight:bold;
+}
+#columnleft span{
+	text-decoration:underline;
+	font-weight:bold;
+}
+#questionlist{
+	margin-top:15px;
+	margin-bottom:15px;
+}
+#columnright a, #columnright a:visited{
+	color:#006;
+	font-size:16px;
+}
+#columnright a:hover{
+	color:#F63;
+}
+#addSurveyQ li{
+	color: #F63;
+	margin-left:25px;
+}
+#columnleft li {
+	margin-left: 10px;
+}
+.messages{
+	color:#F00;
+	margin-left:10px;
+
+}
+-->
+</style>
+
+<h1>Edit Survey</h1>
+
+<div id="columnleft">
+
+<a id="surveyTitle" href="/surveys/{{ survey_id }}/edit">Edit Survey Title</a>
+<div id="questionlist"><span>Question List</span></div questionlist>
+{% for question in survey.question_set.all %}
+<li><a href="/surveys/{{ survey_id }}/editquestion/{{ question.questionno }}/">Question {{ forloop.counter }}</a></li>
+{% endfor %}
+
+</div columnleft>
+
+<div id="columnright">
+
+<a href="/surveys/{{ survey_id }}/newquestion/">Create Question | </a>
+<a href="/surveys/{{ survey_id }}/deletequestion/{{ question_no }}"> Delete Question</a>
+<div id="qnNum"> 
+       Question {{ question_no }}<br>
+</div>
+<div id="responseB">Choose Response Type: <button id="radio">Radio</button><button id="text">Text</button><button id="check">Check</button><button id="number">Number</button><br>
+</div>
+<form method="POST" action="/surveys/{{ survey_id }}/editquestion/{{ question_no }}/">
+	
+	{% csrf_token %}
+	{% if messages %}
+		<ul class="messages">
+		{% for message in messages %}
+		<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}</ul>
+	{% endif %}
+	{{ form.non_field_errors }}	
+	<div class="fieldWrapper">
+		
+       
+		<label for="id_subject">Question Title:</label>
+		{{ form.description }}
+        <span class="error">
+        	{% for e in form.description.errors %}
+            *{{e}}
+            {% endfor %}
+        </span>
+	</div>
+    <div id="choices">
+		<input type='hidden' name='qntype' value='{{ qntype }}'/>	
+ 		{% if qntype == 'TF' %}
+		<strong>Response Type: </strong>Textbox <br>
+		<input type='text' name='example' id='textboxfield' value='example'/>
+		{% elif qntype == 'RB' %}
+		<strong>Response Type: </strong>Radio Button 
+		{% elif qntype == 'CB' %}
+		<strong>Response Type: </strong>Checkbox 
+		{% elif qntype == 'NI' %}
+		<strong>Response Type: </strong>Numberic Input <br>
+		<input type='text' name='example' id='textboxfield2' value='example'/>
+		{% endif %}
+		{% if qntype == 'RB' or qntype == 'CB' %}
+        
+		<div class='fieldWrapper'>
+			<li><input id='id_choice1' type='text' name='choice1' maxlength='200' value='{{ initial.choice1 }}'/></li>
+		</div>
+		<div class='fieldWrapper'>
+			<li><input id='id_choice2' type='text' name='choice2' maxlength='200' value='{{ initial.choice2 }}'/></li>
+		</div>
+		<div class='fieldWrapper'>
+			<li><input id='id_choice3' type='text' name='choice3' maxlength='200' value='{{ initial.choice3 }}'/></li>
+		</div>
+		<div class='fieldWrapper'>
+			<li><input id='id_choice4' type='text' name='choice4' maxlength='200' value='{{ initial.choice4 }}'/></li>
+		</div>
+		{% endif %}
+  </div>
+    <div id="responseB">
+    <p><input type="submit" value="Save Question" id="submitB"/><input type="button" value="Cancel" onClick="parent.location='/surveys/home'" id="cancelB"/></p>
+    </div>
+ </div columnright>
+</form>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#text').click(function(){
+			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='TF'/><strong>Response Type: </strong>Textbox <br><input type='text' name='example' id='textboxfield' value='example'/></div>");})
+		$('#radio').click(function(){
+			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='RB'/><strong>Response Type: </strong>Radio Button <div class='fieldWrapper'><li><input id='id_choice1' type='text' name='choice1' maxlength='200' value='{{ initial.choice1 }}'/></li></div><div class='fieldWrapper'><li><input id='id_choice2' type='text' name='choice2' maxlength='200' value='{{ initial.choice2 }}'/></li></div><div class='fieldWrapper'><li><input id='id_choice3' type='text' name='choice3' maxlength='200' value='{{ initial.choice3 }}'/></li></div><div class='fieldWrapper'><li><input id='id_choice4' type='text' name='choice4' maxlength='200' value='{{ initial.choice4 }}'/></li></div></div>");})
+		$('#check').click(function(){
+			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='CB'/><strong>Response Type: </strong> Checkbox <div class='fieldWrapper'><li><input id='id_choice1' type='text' name='choice1' maxlength='200' value='{{ initial.choice1 }}'/></li></div><div class='fieldWrapper'><li><input id='id_choice2' type='text' name='choice2' maxlength='200' value='{{ initial.choice2 }}'/></li></div><div class='fieldWrapper'><li><input id='id_choice3' type='text' name='choice3' maxlength='200' value='{{ initial.choice3 }}'/></li></div><div class='fieldWrapper'><li><input id='id_choice4' type='text' name='choice4' maxlength='200' value='{{ initial.choice4 }}'/></li></div></div>");})
+		$('#number').click(function(){
+			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='NI'/><strong>Response Type: </strong>Numeric Input <br><input type='text' name='example' id='textboxfield2' value='example'/></div>");})
+		console.log('Ready');
+	});
+</script>
+
+{% endblock %}

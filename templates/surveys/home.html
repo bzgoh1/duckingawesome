@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<style type="text/css">
+<!--
+#homecss{
+	padding: 10px;
+	margin-top: 30px;	
+	margin-bottom:30px;
+}
+#homecss a, #homecss a:visited{
+	color:#000;
+}
+#homecss a:hover{
+	color: #F90;
+}
+#surveylink{
+	margin-left:20px;
+}
+table{
+	margin-top:10px;
+	text-align:center;
+}
+input{
+	padding-top:2px;
+	padding-bottom:2px;
+	padding-right:5px;
+	padding-left:5px;
+}
+
+.messages{
+	color:#F00;
+}
+	
+-->
+</style>
+<div id="homecss">
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <span{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span>
+    {% endfor %}
+</ul>
+{% endif %}
+<input id="surveylink" type="button" value="New Survey" onClick="parent.location='/surveys/create/'" />
+
+
+<table width="900" border="1" align="center" style="text-align:center">
+    <tr>
+        <th width="350">Survey Title</th>
+	<th width="190">No. of Response</th>
+	<th width="170">Last Modified</th>
+    <th width="190">Action</th>
+    </tr>
+    {% for survey in surveyList %}
+    <tr> 
+        <td>{{ survey.description }}</td>
+        <td>{{ survey.response_set.count }}</td>
+        <td>{{ survey.mod_date }}</td>
+        <td>
+        	<a href="/surveys/{{ survey.id }}/edit">Edit</a> |
+			<a href="#" onclick='resetSurvey({{ survey.id }}, "{{ survey.description }}")'>Reset</a> |
+        	<a href="#" onclick='delSurvey({{ survey.id }}, "{{ survey.description }}")'>Delete</a>
+        | <a href="#" onclick="urldisplay('{{ urllink }}{{ survey.id }}/', '{{ survey.id }}')">URL</a></td>
+    </tr>
+    {% endfor %}
+</table>
+</div homecss>
+
+<script type="text/javascript">
+	function delSurvey(id, description)
+	{
+			var ans = confirm("Deleting survey " + description + " \nAre you sure?")		
+			if (ans)
+				window.location = "/surveys/" + id + "/delete/";
+	};
+
+	function resetSurvey(id, description)
+	{
+			var ans = confirm("Reset the response in survey " + description + " \nAre you sure?")		
+			if (ans)
+				window.location = "/surveys/" + id + "/reset/";
+	};
+	
+	function urldisplay(sur_link, id)
+	{
+		var ans = prompt("Click 'OK' to attempt survey or 'Cancel' to stay on this page.\nSurvey Link:", sur_link )
+		if (ans)
+				window.location = "/surveys/" + id + "/";
+	};
+	
+	$(document).ready(function(){	
+		console.log('Ready');
+	});
+</script>
+
+{% endblock %}

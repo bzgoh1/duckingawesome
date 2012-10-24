@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style type="text/css">
+<!--
+h1 {
+	margin-left:20px;
+	margin-top: 20px;
+	font-weight:bold;
+	font-size:28px;
+}
+label {
+	padding-top:5px;
+	font-weight:bold;
+	padding-right:20px;
+}
+input{
+	padding-top:2px;
+	padding-bottom:2px;
+	padding-right:5px;
+	padding-left:5px;
+	margin-right:5px;
+}
+
+.fieldWrapper{
+	padding-top:10px;
+	padding-bottom:10px;
+	margin-left:5px;
+}
+#id_description{
+	width:30em;
+}
+#responseB{
+	padding-left:45px;
+	font-weight:bold;
+}
+#textboxfield{
+	width:50em;
+	margin-top:10px;
+	padding:2px;
+	
+}
+#columnleft{
+	float:left;
+	width:120px;
+	height:400px;
+	border:#000 solid 2px;
+	margin-right:10px;
+	margin-bottom:20px;
+	padding:20px;
+}
+#columnright{
+	border:#000 solid 2px;
+	width:740px;
+	float:right;
+	height:400px;
+	margin-bottom:20px;
+	padding:20px;
+}
+strong {
+	text-decoration: underline;
+	font-weight:bold;
+}
+
+li{
+	margin-left:10px;
+}
+#columnright a, #columnright a:visited{
+	color:#006;
+	text-decoration:none;
+}
+li a:hover{
+	color:#F60;
+}
+#surveyTitle{
+	font-weight:bold;
+	color:#000;
+}
+#columnleft span{
+	text-decoration:underline;
+	font-weight:bold;
+}
+#questionlist{
+	margin-top:15px;
+	margin-bottom:15px;
+}
+-->
+</style>
+
+<h1>Edit Survey</h1>
+
+<div id="columnleft">
+
+<a id="surveyTitle" href="/surveys/{{ survey_id }}/edit">Edit Survey Title</a>
+<div id="questionlist">
+<span>Question List</span>
+</div questionlist>
+{% for question in survey.question_set.all %}
+<li><a href="/surveys/{{ survey_id }}/editquestion/{{ question.questionno }}/">Question {{ forloop.counter }}</a></li>
+{% endfor %}
+
+</div columnleft>
+<div id="columnright">
+
+<a href="/surveys/{{ survey_id }}/newquestion/">Create Question</a>
+
+{% if messages %}
+	<ul class="messages">
+	{% for message in messages %}
+	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	{% endfor %}</ul>
+{% endif %}
+
+<form action="/surveys/{{ survey_id }}/edit/" method="post">
+	{% csrf_token %}
+	<div class="fieldWrapper">
+			<!--{{ form.description.errors }}-->
+			<label for="id_description">Survey Title:</label>
+			{{ form.description }}
+            <span class="error">
+        	{% for e in form.description.errors %}
+            *{{e}}
+            {% endfor %}
+        	</span>
+		</div>
+	<input type="submit" value="Save" onclick="parent.location='/surveys/home'">
+    <input type="button" value="Back" onclick="parent.location='/surveys/home'">
+</form>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		console.log('Ready');
+	});
+</script>
+
+{% endblock %}

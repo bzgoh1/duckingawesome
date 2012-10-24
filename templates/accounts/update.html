@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style type="text/css">
+<!--
+#profileForm{
+	padding: 10px;
+	margin-top: 30px;
+	margin-left: 30px;
+	margin-bottom:30px;
+}
+h1 {
+	margin-bottom: 20px;
+	margin-left:20px;
+	margin-top: 20px;
+	font-weight:bold;
+	font-size:28px;
+}
+label {
+	padding-top:5px;
+	font-weight:bold;
+	padding-right:20px;
+}
+input{
+	padding-top:2px;
+	padding-bottom:2px;
+	padding-right:5px;
+	padding-left:5px;
+}
+
+.fieldWrapper{
+	padding-top:10px;
+	padding-bottom:10px;
+}
+#profile{
+	padding-bottom:20px;
+}
+-->
+</style>
+
+<h1>Update Profile </h1>
+<form action="/profile/update/" method="post" id="profileForm">
+
+{% csrf_token %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<div id="profile">
+
+{{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ field.name.label_tag }}<label>Name</label>: {{ form.name }}
+        <span class="error">
+        	{% for e in form.name.errors %}
+            *{{e}}
+            {% endfor %}
+        </span>
+    </div>
+    <div class="fieldWrapper">
+        {{ field.email.label_tag }}<label>Email</label>: {{ form.email }}
+        <span class="error">
+        	{% for e in form.email.errors %}
+            *{{e}}
+            {% endfor %}
+        </span>
+    </div>
+    <div class="fieldWrapper">
+        {{ field.gender.label_tag }}<label>Gender</label>: {{ form.gender }}
+        <span class="error">
+        	{% for e in form.gender.errors %}
+            * {{e}}
+            {% endfor %}
+        </span>
+    </div>
+    <div class="fieldWrapper">
+        {{ field.birhtdate.label_tag }}<label>Date of Birth</label>: {{ form.birthdate }}
+        <span class="error">
+        	{% for e in form.birthdate.errors %}
+            * {{e}}
+            {% endfor %}
+        </span>
+    </div>
+    <div class="fieldWrapper">
+        {{ field.contactno.label_tag }}<label>Contact No.</label>: {{ form.contactno }}
+        <span class="error">
+        	{% for e in form.contactno.errors %}
+            *{{e}}
+            {% endfor %}
+        </span>
+    </div>
+    </div profile>
+
+<input type="submit" value="Update"/>
+<input type="button" value="Back" onClick="parent.location='/profile'" />
+</form>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		console.log('Ready');
+	});
+</script>
+
+{% endblock %}

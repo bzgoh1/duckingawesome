@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>DuckingAwesome</title>
+		<script src="{{ STATIC_URL }}js/jquery-1.8.2.min.js"></script>
+        <style type="text/css">
+<!--
+*{
+	/*margin:0px;*/
+	padding:0px;
+	text-decoration:none;
+}
+#wrapper {
+	margin-right:auto;
+	margin-left:auto;
+	width:960px;
+	display: block;
+}
+#header {
+	height: 80px;
+	border-bottom-width: 5px;
+	border-bottom-style: solid;
+	border-bottom-color: #000;
+}
+#DAlogo {
+	float: left;
+	margin-left:25px;
+	margin-top:10px;
+}
+#footer {
+	height: 40px;
+	width:960px;
+	border-top-width: 5px;
+	border-top-style: solid;
+	border-top-color: #000;
+	float:left;
+}
+#footer p{
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	margin:15px;
+	text-align:center;
+}
+#copyright {
+	font-style: italic;
+	color: #666;
+}
+/*content*/
+#content {
+	padding: 20px;
+	width:960px;
+}
+#content h1 {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 32px;
+	font-weight: bold;
+	color: #000;
+	margin-top: 25px;
+}
+#signup a, #signup a:visited{
+	float:right;
+	text-align:center;
+	background-color: #009;
+	border: 1px solid #003;
+	font-family: Verdana, Geneva, sans-serif;
+	color: #FFF;
+	font-size:12px;
+	font-weight: bold;
+	padding-top: 8px;
+	padding-right: 15px;
+	padding-bottom: 8px;
+	padding-left: 15px;
+	margin-top: 35px;
+	margin-right: 50px;
+}
+#columnLeft{
+	padding-top:5px;
+	padding-bottom:15px;
+	width:450px;
+	text-align:center;
+	float:left;
+}
+#columnRight{
+	width:450px;
+	text-align:center;
+	float:right;
+}
+#loginBox{
+	height: 200px;
+	width: 350px;
+	background-color: #69F;
+	margin-top: 50px;
+	padding-top:30px;
+	padding-left: 20px;
+	padding-bottom: 25px;
+	vertical-align: middle;
+	text-align:left;
+	border: medium solid #006;
+	
+}
+#fieldWrapper {
+	font-family: Verdana, Geneva, sans-serif;
+	padding-top: 20px;
+	padding-bottom: 5px;
+	padding-left:20px;
+}
+li.error{
+	color: #900;
+	list-style:none;
+}
+#id_username, #id_password{
+	max-width:140px;
+}
+table{
+	vertical-align: middle;
+	padding-left:10px;
+}
+#loginB{
+	margin-left:35px;
+}
+td{
+	height:20px;	
+}
+#invalidError{
+	height:30px;
+	margin-left:35px;/*
+	margin-top:40px;*/
+}
+-->
+</style>
+	</head>
+	<body>
+
+<div id="wrapper">
+	<div id="header">
+		<div id="DAlogo">
+			<img src="{{ STATIC_URL }}image/DAlogo.jpg" width="220" height="50" alt="duckingAwesomeLogo" />
+	    </div DAlogo>
+        <div id="signup">
+		  <a href="/register/">Register</a>
+        </div signup>
+	</div header>
+    <div id="content">
+    	<div id="columnLeft"><img src="{{ STATIC_URL }}image/login_columnLeft.jpg" width="260" height="358" alt="login_columnLeft" />
+        </div columnLeft>
+        <div id="columnRight">
+        	<div id="loginBox">
+              <form action="/" method="post">
+                
+                <table width="300" align="center">
+                	<tr id="invalidError" height="50px;">
+                <span class="messages"> 
+                {% csrf_token %}
+                	{% if messages %}
+                      {% for message in messages %}
+                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                      {% endfor %}
+                </span>
+                  {% endif %}
+                  </tr>
+                  <tr>
+                    <td width="60">
+                    
+                    <label id="usernameL">Username </label>
+                    </td>
+                    <td>
+                        <div class="fieldWrapper">
+                        {{ field.username.label_tag }}: {{ form.username }}
+                        
+                    	</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>
+                    	<li class="error">
+                            {% for e in form.username.errors %}
+                            *{{e}}
+                            {% endfor %}
+                        </li>
+                    
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                    <label>Password </label>
+                    
+                    </td>
+                    <td>
+                        <div class="fieldWrapper">
+                        {{ field.password.label_tag }}: {{ form.password }}
+                            
+                    	</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>
+                    	<li class="error">
+                                {% for e in form.password.errors %}
+                                *{{e}}
+                                {% endfor %}
+                        </li>
+                    </td>
+                  </tr>
+                </table>
+
+                <p><input type="submit" value="Login" style="padding-left:10px;padding-right:10px;padding-top:2px;padding-bottom:2px;" id="loginB"/></p>
+              </form>
+            </div loginBox>
+        </div columnRight>
+    </div content>
+	<div id="footer">
+        <p id="copyright">© 2012 DuckingAwesome </p>
+    
+	</div footer>
+</div wrapper>
+
+<script type="text/javascript">
+	
+	$(document).ready(function(){
+
+		console.log('Ready');
+
+	});
+</script>
+
+
+</body>
+</html>
+

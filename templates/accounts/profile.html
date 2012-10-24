@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style type="text/css">
+<!--
+#myProfile{
+	padding: 10px;
+	margin-top: 30px;
+	margin-left: 30px;
+	margin-bottom:30px;
+}
+h1 {
+	margin-bottom: 20px;
+	margin-left:20px;
+	margin-top: 20px;
+	font-weight:bold;
+	font-size:28px;
+}
+label {
+	padding-top:5px;
+	font-weight:bold;
+	padding-right:20px;
+}
+input{
+	padding-top:2px;
+	padding-bottom:2px;
+	padding-right:5px;
+	padding-left:5px;
+}
+
+.fieldWrapper{
+	padding-top:10px;
+	padding-bottom:10px;
+}
+.messages{
+	color:#F60;
+}
+#profile{
+	padding-bottom:20px;
+}
+-->
+</style>
+<h1>My Profile</h1>
+
+<form id="myProfile">{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<div id="profile">
+  <div class="fieldWrapper">
+  <label>Name :</label>{{ user.first_name }}
+  </div>
+  <div class="fieldWrapper">
+  <label>Email :</label> {{ user.email }} 
+  </div>
+  <div class="fieldWrapper">
+  {% if profile.gender == 'F' %}
+  <label>Gender :</label> Female
+  {% else %}
+  <label>Gender :</label> Male
+  {% endif %}
+  </div>
+  <div class="fieldWrapper">
+  <label>Birthday :</label> {{ profile.birthdate }} 
+  </div>
+  <div class="fieldWrapper">
+  <label>Contact Number :</label> {{ profile.contactno }} 
+  </div>
+</div profile>
+<input type=button value="Update Profile" onClick="self.location='/profile/update'">
+<input type=button value="Change Password" onClick="self.location='/profile/password'">
+<input type="button" value="Back" onClick="parent.location='../surveys/home'" />
+
+</form>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		console.log('Ready');
+	});
+</script>
+{% endblock %}

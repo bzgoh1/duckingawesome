@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style type="text/css">
+<!--
+h1 {
+	margin-left:20px;
+	margin-top: 20px;
+	font-weight:bold;
+	font-size:28px;
+}
+
+label {
+	padding-top:5px;
+	font-weight:bold;
+	padding-right:20px;
+}
+button, #nextButton, #resetButton, #DoneButton{
+	padding-top:2px;
+	padding-bottom:2px;
+	padding-right:5px;
+	padding-left:5px;
+	margin-right:5px;
+}
+button{
+	margin-bottom:20px;
+}
+.fieldWrapper{
+	padding-top:10px;
+	padding-bottom:10px;
+	margin-left:20px;
+}
+#addSurveyQ{
+	padding-bottom:10px;
+}
+#id_description{
+	width:30em;
+}
+#id_choice1, #id_choice2, #id_choice3, #id_choice4{
+	margin-left:10px;
+	width:20em;
+}
+#responseB{
+	font-weight:bold;
+}
+#columnleft span{
+	text-decoration:underline;
+	font-weight:bold;
+	padding-bottom:10px;
+}
+#textboxfield{
+	width:50em;
+	margin-top:10px;
+	padding:2px;
+	margin-left:20px;
+	
+}
+#textboxfield2{
+	width:5em;
+	margin-top:10px;
+	padding:2px;
+	margin-left:20px;
+	
+}
+#columnleft{
+	float:left;
+	width:120px;
+	height:400px;
+	border:#000 solid 2px;
+	margin-right:10px;
+	margin-bottom:20px;
+	padding:20px;
+}
+#columnright{
+	border:#000 solid 2px;
+	width:740px;
+	float:right;
+	height:400px;
+	margin-bottom:20px;
+	padding:20px;
+}
+li{
+	margin-left:10px;
+}
+li a, li a:visited{
+	color:#006;
+	text-decoration:none;
+}
+li a:hover{
+	color:#F60;
+}
+#questionlist{
+	margin-top:10px;
+	margin-bottom:10px;
+}
+#addSurveyQ li{
+	color: #F63;
+	margin-left:25px;
+}
+strong{
+	margin-left:20px;
+}
+-->
+</style>
+<h1>Create Survey Questions</h1>
+
+<div id="columnleft">
+<div id="questionlist"><span>Question List</span></div questionlist>
+{% for question in survey.question_set.all %}
+<li><a href="/surveys/{{ survey_id }}/editquestion/{{ question.questionno }}/">Question {{ forloop.counter }}</a></li>
+{% endfor %}
+
+</div columnleft>
+
+<div id="columnright">
+<div id="responseB"> Choose Response Type: <button id="radio">Radio</button><button id="text">Text</button><button id="check">Check</button><button id="number">Number</button><br></div>
+
+<form method="POST" action="/surveys/{{ survey_id }}/newquestion/" id="addsurveyQF">
+	<div id="addSurveyQ">
+	{% if messages %}
+	  
+		{% for message in messages %}
+		<div class="fieldWrapper">
+			<label for="id_description">Question Title:</label>
+			{{ form.description }}
+            <span class="error">
+            
+        	{% for e in form.description.errors %}
+            *{{e}}
+            {% endfor %}
+        	</span>
+		</div>
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+	{% else %}
+	{{ form.non_field_errors }}	
+	<div class="fieldWrapper">
+		<!--{{ form.description.errors }}-->
+		<label for="id_description">Question Title:</label>
+		<input id='id_description' type='text' name='description' maxlength='200' />
+        <span class="error">
+        	{% for e in form.description.errors %}
+            *{{e}}
+            {% endfor %}
+        </span>
+	</div>
+	{% endif %}
+    <div id="choices">
+		<input type="hidden" name='qntype' value='RB'/>
+        <strong>Response Type: </strong>Radio Button 
+        
+		<div class='fieldWrapper'> 
+        	<input type="radio" disabled="disabled">
+			<input id='id_choice1' type='text' name='choice1' maxlength='200' />
+		</div>
+		<div class='fieldWrapper'>
+        	<input type="radio" disabled="disabled">
+            <input id='id_choice2' type='text' name='choice2' maxlength='200' />
+		</div>
+		<div class='fieldWrapper'>
+        	<input type="radio" disabled="disabled">
+            <input id='id_choice3' type='text' name='choice3' maxlength='200' />
+		</div>
+		<div class='fieldWrapper'>
+        	<input type="radio" disabled="disabled">
+            <input id='id_choice4' type='text' name='choice4' maxlength='200' />
+		</div>
+	</div>
+    </div addSurveyQ>
+    <p><input id="nextButton" type="submit" value="Save and Next" /><input id="resetButton" type="reset" value="Reset"/><input id="DoneButton" type="button" value="Done" onClick="parent.location='/surveys/home'"/></p>	
+</form>
+</div columnright>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#text').click(function(){
+			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='TF'/><strong>Response Type: </strong>Textbox <br><input type='text' name='example' id='textboxfield' value='example'></div>");})
+		$('#radio').click(function(){
+			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='RB'/><strong>Response Type: </strong>Radio Button <div class='fieldWrapper'><input type='radio' disabled='disabled'> <input id='id_choice1' type='text' name='choice1' maxlength='200' /></div><div class='fieldWrapper'><input type='radio' disabled='disabled'> <input id='id_choice2' type='text' name='choice2' maxlength='200' /></div><div class='fieldWrapper'><input type='radio' disabled='disabled'> <input id='id_choice3' type='text' name='choice3' maxlength='200' /></div><div class='fieldWrapper'><input type='radio' disabled='disabled'> <input id='id_choice4' type='text' name='choice4' maxlength='200' /></div></div>");})
+		$('#check').click(function(){
+			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='CB'/><strong>Response Type: </strong>CheckBox <div class='fieldWrapper'><input type='checkbox' disabled='disabled'> <input id='id_choice1' type='text' name='choice1' maxlength='200' /></div><div class='fieldWrapper'><input type='checkbox' disabled='disabled'> <input id='id_choice2' type='text' name='choice2' maxlength='200' /></div><div class='fieldWrapper'><input type='checkbox' disabled='disabled'> <input id='id_choice3' type='text' name='choice3' maxlength='200' /></div><div class='fieldWrapper'><input type='checkbox' disabled='disabled'> <input id='id_choice4' type='text' name='choice4' maxlength='200' /></div></div>");})
+		$('#number').click(function(){
+			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='NI'/><strong>Response Type: </strong>Numeric Input <br><input type='text' name='example' id='textboxfield2'></div>");})
+		console.log('Ready');
+	});
+</script>
+
+{% endblock %}

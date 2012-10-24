@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>DuckingAwesome</title>
+		<script src="{{ STATIC_URL }}js/jquery-1.8.2.min.js"></script>
+        <style type="text/css">
+<!--
+*{
+	
+	padding:0px;
+	text-decoration:none;
+}
+#wrapper {
+	margin-right:auto;
+	margin-left:auto;
+	width:960px;	
+	display: block;
+}
+#header {
+	height: 80px;
+	border-bottom-width: 5px;
+	border-bottom-style: solid;
+	border-bottom-color: #000;
+}
+#DAlogo {
+	float: left;
+	margin-left:25px;
+	margin-top:10px;
+}
+#footer {
+	height: 40px;
+	width:960px;
+	border-top-width: 5px;
+	border-top-style: solid;
+	border-top-color: #000;
+	float:left;
+}
+#footer p{
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	margin:15px;
+	text-align:center;
+}
+#copyright {
+	font-style: italic;
+	color: #666;
+}
+/*content*/
+#content {
+	padding: 20px;
+}
+#content h1 {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 32px;
+	font-weight: bold;
+	color: #000;
+	margin-top: 25px;
+}
+#logoutUser{
+	float:right;
+	text-align:right;
+}
+#logoutUser a, #logoutUser a:visited{
+	color:#000;
+}
+#logoutUser a:hover{
+	color: #369;
+}
+#username{
+	font-style: italic;
+	text-transform: capitalize;
+}
+#registerForm {
+	padding: 10px;
+	margin-top: 30px;
+	margin-left: 30px;
+	margin-bottom:30px;
+}
+li{
+	list-style:none;
+}
+#registerForm p{
+	padding-top:10px;
+	padding-bottom:10px;
+}
+h1 {
+	padding: 10px;
+	margin-top:30px;
+}
+label{
+	padding-top:5px;
+	font-weight:bold;
+}
+#regButton{
+	padding-top:2px;
+	padding-bottom:2px;
+	padding-right:5px;
+	padding-left:5px;
+}
+span.error{
+	color:red;
+}
+.fieldWrapper{
+	padding-top:10px;
+	padding-bottom:10px;
+}
+-->
+        </style>
+	</head>
+	<body>
+    	<div id="wrapper">
+			<div id="header">
+					<div id="DAlogo">
+						<img src="{{ STATIC_URL }}image/DAlogo.jpg" width="220" height="50" alt="duckingAwesomeLogo" onClick="parent.location='../'" />
+					</div DAlogo>
+  			</div header>
+			<div id="contentColumn">
+
+ <h1>Sign Up as a New User </h1>
+<form action="/register/" method="post" id="registerForm">
+
+{% csrf_token %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ field.name.label_tag }}<label>Name</label>: {{ form.name }}
+        <span class="error">
+        	{% for e in form.name.errors %}
+            *{{e}}
+            {% endfor %}
+        </span>
+    </div>
+    <div class="fieldWrapper">
+        {{ field.username.label_tag }}<label>Username</label>: {{ form.username }}
+        <span class="error">
+        	{% for e in form.username.errors %}
+            *{{e}}
+            {% endfor %}
+        </span>
+    </div>
+    <div class="fieldWrapper">
+        {{ field.password.label_tag }}<label>New Password</label>: {{ form.password }}
+        <span class="error">
+        	{% for e in form.password.errors %}
+            *{{e}}
+            {% endfor %}
+        </span>
+    </div>
+    <div class="fieldWrapper">
+        {{ field.password2.label_tag }}<label>Confirm Password</label>: {{ form.password2 }}
+        <span class="error">
+        	{% for e in form.password2.errors %}
+            *{{e}}
+            {% endfor %}
+        </span>
+    </div>
+    <div class="fieldWrapper">
+        {{ field.email.label_tag }}<label>Email</label>: {{ form.email }}
+        <span class="error">
+        	{% for e in form.email.errors %}
+            *{{e}}
+            {% endfor %}
+        </span>
+    </div>
+    <div class="fieldWrapper">
+        {{ field.gender.label_tag }}<label>Gender</label>: {{ form.gender }}
+        <span class="error">
+        	{% for e in form.gender.errors %}
+            * {{e}}
+            {% endfor %}
+        </span>
+    </div>
+    <div class="fieldWrapper">
+        {{ field.birhtdate.label_tag }}<label>Date of Birth</label>: {{ form.birthdate }}
+        <span class="error">
+        	{% for e in form.birthdate.errors %}
+            * {{e}}
+            {% endfor %}
+        </span>
+    </div>
+    <div class="fieldWrapper">
+        {{ field.contactno.label_tag }}<label>Contact No.</label>: {{ form.contactno }}
+        <span class="error">
+        	{% for e in form.contactno.errors %}
+            *{{e}}
+            {% endfor %}
+        </span>
+    </div>
+</br><input type="submit" value="Register" id="regButton"/>
+<input type="reset" value="Clear Form" id="regButton"/>
+<input type="button" value="Back to home" onClick="parent.location='../'" id="regButton">
+</form>
+
+</div contentColumn>
+			<div id="footer">
+        	<p id="copyright">© 2012 DuckingAwesome </p>
+			</div footer>
+		</div wrapper>
+	</body>
+</html>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		console.log('Ready');
+	});
+</script>
