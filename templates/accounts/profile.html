@@ -28,10 +28,6 @@ input{
 	padding-left:5px;
 }
 
-.fieldWrapper{
-	padding-top:10px;
-	padding-bottom:10px;
-}
 .messages{
 	color:#F60;
 }
@@ -49,27 +45,43 @@ input{
     {% endfor %}
 </ul>
 {% endif %}
+
 <div id="profile">
-  <div class="fieldWrapper">
-  <label>Name :</label>{{ user.first_name }}
-  </div>
-  <div class="fieldWrapper">
-  <label>Email :</label> {{ user.email }} 
-  </div>
-  <div class="fieldWrapper">
-  {% if profile.gender == 'F' %}
-  <label>Gender :</label> Female
-  {% else %}
-  <label>Gender :</label> Male
-  {% endif %}
-  </div>
-  <div class="fieldWrapper">
-  <label>Birthday :</label> {{ profile.birthdate }} 
-  </div>
-  <div class="fieldWrapper">
-  <label>Contact Number :</label> {{ profile.contactno }} 
-  </div>
+<table width="270">
+  <tr><div class="fieldWrapper">
+    <td height="50"><label>Name :</label></td>
+    <td>{{ user.first_name }}</td></div>
+  </tr>
+  
+  <tr><div class="fieldWrapper">
+    <td height="50"><label>Email :</label></td>
+    <td>{{ user.email }}</td></div>
+  </tr>
+  
+  <tr><div class="fieldWrapper"> 
+    <td height="50"><label>Gender :</label></td>
+    <td>
+    	{% if profile.gender == 'F' %}
+     	Female
+  		{% else %}
+  		 Male
+  		{% endif %}
+    </td></div>
+  </tr>
+  
+  <tr> <div class="fieldWrapper">
+    <td height="50"><label>Birthday :</label></td>
+    <td>{{ profile.birthdate }}</td></div>
+  </tr>
+  
+  <tr><div class="fieldWrapper">
+    <td height="50"><label>Contact Number :</label></td>
+    <td>{{ profile.contactno }}</td></div>
+  </tr>
+</table>
 </div profile>
+ 
+
 <input type=button value="Update Profile" onClick="self.location='/profile/update'">
 <input type=button value="Change Password" onClick="self.location='/profile/password'">
 <input type="button" value="Back" onClick="parent.location='../surveys/home'" />

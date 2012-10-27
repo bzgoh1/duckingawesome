@@ -11,8 +11,6 @@ from .models import Survey, Question, Choice, Response
 from .forms import *
 
 
-# Create your views here.
-
 @login_required
 def home(request):
 	surveyList = Survey.objects.filter(user=request.user)
@@ -24,7 +22,18 @@ def home(request):
 	urllink = str.replace(urllink, 'home/', '')
 	return render(request, 'surveys/home.html', {'surveyList': surveyList, 'urllink': urllink})
 
-
+	
+@login_required
+def view(request, survey_id):
+	user = request.user
+	try:
+		survey = user.survey_set.get(pk=survey_id)
+	except Survey.DoesNotExist:
+		raise Http404
+		
+	return render(request, 'surveys/view.html', {'survey_id': survey_id, 'survey': survey})
+        
+        
 @login_required
 def create(request):
 	user = request.user
@@ -66,6 +75,12 @@ def newQuestion(request, survey_id):
 					question.choice_set.create(description=form.cleaned_data['choice3'], votes=0, choiceno=3)
 				if form.cleaned_data['choice4']:
 					question.choice_set.create(description=form.cleaned_data['choice4'], votes=0, choiceno=4)
+					
+				try:
+					request.POST['end']
+					return redirect('/surveys/home/')
+				except:
+					pass
 			else:
 				messages.error(request, u'Please enter at least 1 choice.')
 		else:
@@ -73,6 +88,12 @@ def newQuestion(request, survey_id):
 			question.questiontype = qntype
 			question.save()
 			survey.save()
+			
+			try:
+				request.POST['end']
+				return redirect('/surveys/home/')
+			except:
+				pass
 
 	return render(request, 'surveys/newquestion.html', {'form': form, 'survey_id': survey_id, 'survey': survey,})
 	
@@ -173,13 +194,14 @@ def editQuestion(request, survey_id, question_no):
 			else:
 				messages.error(request, u'Please enter at least 1 choice.')
 		else:
+			if question.questiontype != qntype:
+				for choice in question.choice_set.all():
+					choice.delete()
 			question.description = form.cleaned_data['description']
 			question.questiontype = qntype
 			question.save()
 			survey.save()
 			
-			for choice in question.choice_set.all():
-				choice.delete()
 				
 			messages.success(request, u'Your question has been edited.')
 				
@@ -281,7 +303,8 @@ def attempt(request, survey_id):
 			if question.questiontype == 'TF':
 				try: 
 					request.POST[qnname]
-					question.choice_set.create(description=request.POST[qnname], votes=0, choiceno=0)
+					if request.POST[qnname]:
+						question.choice_set.create(description=request.POST[qnname], votes=0, choiceno=0)
 				except:
 					pass
 			elif  question.questiontype == 'RB':
@@ -294,9 +317,9 @@ def attempt(request, survey_id):
 					pass
 			elif question.questiontype == 'CB':
 				try:
-					request.POST[qnname]
-					for value in request.POST[qnname]:
-						choice = get_object_or_404(Choice, pk=request.POST[qnname])	
+					choicelist = request.POST.getlist(qnname)
+					for value in choicelist:
+						choice = get_object_or_404(Choice, pk=value)	
 						choice.votes += 1
 						choice.save()
 				except:
@@ -361,15 +384,15 @@ def reset(request, survey_id):
 	return redirect('/surveys/home/')
 
 
+@login_required		
+def responses(request, survey_id):
+	user = request.user
 
-
-
-
-
-
-
-
-
-		
+	try:
+		survey = user.survey_set.get(pk=survey_id)
+	except Survey.DoesNotExist:
+		raise Http404
 	
+	responses = survey.response_set.filter(valid=True)		
 	
+	return render(request, 'surveys/responses.html', {'survey_id': survey_id, 'survey': survey, 'responses': responses})

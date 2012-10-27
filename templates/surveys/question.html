@@ -38,6 +38,7 @@ input{
 }
 .fieldWrapper li {
 	margin-left: 30px;
+	color:#000;
 }
 #id_description{
 	width:30em;
@@ -67,6 +68,11 @@ input{
 li a, li a:visited{
 	color:#006;
 	text-decoration:none;
+}
+
+li{
+	margin-left:10px;
+	color:red;
 }
 li a:hover{
 	color:#F60;
@@ -107,6 +113,7 @@ li a:hover{
 }
 #columnleft li {
 	margin-left: 10px;
+	color:#000;
 }
 .messages{
 	color:#F00;
@@ -162,14 +169,14 @@ li a:hover{
 		<input type='hidden' name='qntype' value='{{ qntype }}'/>	
  		{% if qntype == 'TF' %}
 		<strong>Response Type: </strong>Textbox <br>
-		<input type='text' name='example' id='textboxfield' value='example'/>
+		<input type='text' name='example' id='textboxfield' value='example' readonly='readonly'/>
 		{% elif qntype == 'RB' %}
 		<strong>Response Type: </strong>Radio Button 
 		{% elif qntype == 'CB' %}
 		<strong>Response Type: </strong>Checkbox 
 		{% elif qntype == 'NI' %}
-		<strong>Response Type: </strong>Numberic Input <br>
-		<input type='text' name='example' id='textboxfield2' value='example'/>
+		<strong>Response Type: </strong>Numeric Input <br>
+		<input type='text' name='example' id='textboxfield2' readonly='readonly'/>
 		{% endif %}
 		{% if qntype == 'RB' or qntype == 'CB' %}
         
@@ -197,13 +204,13 @@ li a:hover{
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('#text').click(function(){
-			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='TF'/><strong>Response Type: </strong>Textbox <br><input type='text' name='example' id='textboxfield' value='example'/></div>");})
+			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='TF'/><strong>Response Type: </strong>Textbox <br><input type='text' name='example' id='textboxfield' value='example' readonly='readonly'/></div>");})
 		$('#radio').click(function(){
 			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='RB'/><strong>Response Type: </strong>Radio Button <div class='fieldWrapper'><li><input id='id_choice1' type='text' name='choice1' maxlength='200' value='{{ initial.choice1 }}'/></li></div><div class='fieldWrapper'><li><input id='id_choice2' type='text' name='choice2' maxlength='200' value='{{ initial.choice2 }}'/></li></div><div class='fieldWrapper'><li><input id='id_choice3' type='text' name='choice3' maxlength='200' value='{{ initial.choice3 }}'/></li></div><div class='fieldWrapper'><li><input id='id_choice4' type='text' name='choice4' maxlength='200' value='{{ initial.choice4 }}'/></li></div></div>");})
 		$('#check').click(function(){
 			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='CB'/><strong>Response Type: </strong> Checkbox <div class='fieldWrapper'><li><input id='id_choice1' type='text' name='choice1' maxlength='200' value='{{ initial.choice1 }}'/></li></div><div class='fieldWrapper'><li><input id='id_choice2' type='text' name='choice2' maxlength='200' value='{{ initial.choice2 }}'/></li></div><div class='fieldWrapper'><li><input id='id_choice3' type='text' name='choice3' maxlength='200' value='{{ initial.choice3 }}'/></li></div><div class='fieldWrapper'><li><input id='id_choice4' type='text' name='choice4' maxlength='200' value='{{ initial.choice4 }}'/></li></div></div>");})
 		$('#number').click(function(){
-			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='NI'/><strong>Response Type: </strong>Numeric Input <br><input type='text' name='example' id='textboxfield2' value='example'/></div>");})
+			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='NI'/><strong>Response Type: </strong>Numeric Input <br><input type='text' name='example' id='textboxfield2' readonly='readonly'/></div>");})
 		console.log('Ready');
 	});
 </script>

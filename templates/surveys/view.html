@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style type="text/css">
+<!--
+h1 {
+	margin-left:20px;
+	margin-top: 20px;
+	font-weight:bold;
+	font-size:28px;
+	text-transform: capitalize;
+}
+h3{
+	margin-left:20px;
+	margin-top: 20px;
+	font-weight:bold;
+	text-transform: capitalize;
+}
+#question{
+	border-top:solid #000 2px; 
+	border-left:solid #000 2px; 
+	border-right:solid #000 2px; 
+	border-bottom:solid #000 2px; 
+	padding:10px;
+	margin-bottom:10px;
+}
+#question p {
+	text-transform: capitalize;
+}
+#content{
+	margin:10px;
+	padding:10px;
+}
+#contentColumn a, #contentColumn a:visited{
+	text-align:right;
+	color:#006;
+}
+#contentColumn a:hover{
+	color:#F33;
+}
+#contentColumn{
+	padding-top: 30px;	
+	margin-bottom:30px;
+	margin-top:10px;
+	padding-left:10px;
+}
+textarea{
+	max-width:880px;
+	max-height:200px
+}
+
+-->
+
+</style>
+<a href="/surveys/home/" style="text-decoration:underline;">Back to Home</a>
+<h1>View Survey Result</h1>
+
+{% if messages %}
+	<ul class="messages">
+	{% for message in messages %}
+	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	{% endfor %}</ul>
+{% endif %}
+
+<h3>Title of survey: {{ survey.description }}</h3>
+<div id="content">
+{% for question in survey.question_set.all %}
+	<div id="question">
+	<p>Question {{ forloop.counter }}: {{ question.description }}</p>
+	<div id="q{{ question.questionno }}{{ question.questiontype }}"></div>
+	{% if question.questiontype == 'TF' %}
+	<div>
+	<textarea rows="4" cols="50" readonly="readonly">{% for choice in question.choice_set.all %}{{ choice.description }}, {% endfor %}</textarea>
+	</div>
+	{% elif question.questiontype == 'NI' %}
+	<div>
+	<textarea rows="4" cols="50" readonly="readonly">{% for choice in question.choice_set.all %}{{ choice.votes }}, {% endfor %}</textarea>
+	</div>
+	{% elif question.questiontype == 'RB' %}
+	<div name="choicelist">{% for choice in question.choice_set.all %}
+	Choice {{ choice.choiceno}}: {{ choice.description }}<br>
+	{% endfor %}</div>
+	<div id="chart{{ question.questionno }}" style="height:150px;width:750px; "></div>
+	{% elif question.questiontype == 'CB' %}
+	<div class="choicelist">{% for choice in question.choice_set.all %}
+	Choice {{ choice.choiceno}}: {{ choice.description }}<br>
+	{% endfor %}</div>
+	<div id="chart{{ question.questionno }}" style="height:150px;width:750px; "></div>
+	{% endif %}
+    </div question>
+{% endfor %}
+
+<a href="#top" style="text-align:center;"><p>Back to top</p></a>
+
+<div id="chart2"></div>
+</div content>
+<script type="text/javascript">
+	$(document).ready(function(){
+	
+	{% for question in survey.question_set.all %}
+		{% if question.questiontype == 'RB' or question.questiontype == 'CB' %}
+		
+		var s{{ question.questionno }} = [];
+		
+		{% for choice in question.choice_set.all %}
+		s{{ question.questionno }}.push({{ choice.votes }});
+		{% endfor %}
+		s{{ question.questionno }}.reverse()
+		
+		var ticks{{ question.questionno }} = []
+		
+		{% for choice in question.choice_set.all %}
+		ticks{{ question.questionno }}.push('Choice{{ choice.choiceno }}');
+		{% endfor %}
+		ticks{{ question.questionno }}.reverse()		
+		
+		function editit(str, si, pi, plot) {
+			var txt = ticks[pi];
+			return txt;
+		}
+		
+		
+		var plot{{ question.questionno }} = $.jqplot('chart{{ question.questionno }}', [s{{ question.questionno }}], {
+			seriesDefaults: {
+				renderer:$.jqplot.BarRenderer,
+				rendererOptions: {
+					barDirection: 'horizontal',
+					barWidth:15,					
+				}
+			},
+			axes: {						
+				yaxis: {
+					renderer: $.jqplot.CategoryAxisRenderer,
+					ticks: ticks{{ question.questionno }},
+				}
+			}
+				
+		})
+		{% endif %}
+		
+	{% endfor %}
+		console.log('Ready');
+	});
+</script>
+
+{% endblock %}

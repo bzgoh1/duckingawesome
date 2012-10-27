@@ -56,11 +56,11 @@ input{
     </tr>
     {% for survey in surveyList %}
     <tr> 
-        <td>{{ survey.description }}</td>
-        <td>{{ survey.response_set.count }}</td>
+        <td><a href="/surveys/{{ survey.id }}/view">{{ survey.description }}</a></td>
+        <td><a href="/surveys/{{ survey.id }}/responses/">{{ survey.response_set.count }}</td>
         <td>{{ survey.mod_date }}</td>
         <td>
-        	<a href="/surveys/{{ survey.id }}/edit">Edit</a> |
+        	<a href="/surveys/{{ survey.id }}/edit/">Edit</a> |
 			<a href="#" onclick='resetSurvey({{ survey.id }}, "{{ survey.description }}")'>Reset</a> |
         	<a href="#" onclick='delSurvey({{ survey.id }}, "{{ survey.description }}")'>Delete</a>
         | <a href="#" onclick="urldisplay('{{ urllink }}{{ survey.id }}/', '{{ survey.id }}')">URL</a></td>

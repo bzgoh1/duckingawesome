@@ -15,7 +15,7 @@ label {
 	font-weight:bold;
 	padding-right:20px;
 }
-button, #nextButton, #resetButton, #DoneButton{
+button, #nextButton,#DoneButton, #endButton{
 	padding-top:2px;
 	padding-bottom:2px;
 	padding-right:5px;
@@ -79,9 +79,6 @@ button{
 	margin-bottom:20px;
 	padding:20px;
 }
-li{
-	margin-left:10px;
-}
 li a, li a:visited{
 	color:#006;
 	text-decoration:none;
@@ -94,7 +91,7 @@ li a:hover{
 	margin-bottom:10px;
 }
 #addSurveyQ li{
-	color: #F63;
+	color: red;
 	margin-left:25px;
 }
 strong{
@@ -167,19 +164,19 @@ strong{
 		</div>
 	</div>
     </div addSurveyQ>
-    <p><input id="nextButton" type="submit" value="Save and Next" /><input id="resetButton" type="reset" value="Reset"/><input id="DoneButton" type="button" value="Done" onClick="parent.location='/surveys/home'"/></p>	
+    <p><input id="nextButton" type="submit" value="Save and Next" /><input id="endButton" type="submit" name="end" value="Save and Exit" /><input id="DoneButton" type="button" value="Exit" onClick="parent.location='/surveys/home'"/></p>	
 </form>
 </div columnright>
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('#text').click(function(){
-			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='TF'/><strong>Response Type: </strong>Textbox <br><input type='text' name='example' id='textboxfield' value='example'></div>");})
+			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='TF'/><strong>Response Type: </strong>Textbox <br><input type='text' name='example' id='textboxfield' value='example' readonly='readonly'/></div>");})
 		$('#radio').click(function(){
 			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='RB'/><strong>Response Type: </strong>Radio Button <div class='fieldWrapper'><input type='radio' disabled='disabled'> <input id='id_choice1' type='text' name='choice1' maxlength='200' /></div><div class='fieldWrapper'><input type='radio' disabled='disabled'> <input id='id_choice2' type='text' name='choice2' maxlength='200' /></div><div class='fieldWrapper'><input type='radio' disabled='disabled'> <input id='id_choice3' type='text' name='choice3' maxlength='200' /></div><div class='fieldWrapper'><input type='radio' disabled='disabled'> <input id='id_choice4' type='text' name='choice4' maxlength='200' /></div></div>");})
 		$('#check').click(function(){
 			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='CB'/><strong>Response Type: </strong>CheckBox <div class='fieldWrapper'><input type='checkbox' disabled='disabled'> <input id='id_choice1' type='text' name='choice1' maxlength='200' /></div><div class='fieldWrapper'><input type='checkbox' disabled='disabled'> <input id='id_choice2' type='text' name='choice2' maxlength='200' /></div><div class='fieldWrapper'><input type='checkbox' disabled='disabled'> <input id='id_choice3' type='text' name='choice3' maxlength='200' /></div><div class='fieldWrapper'><input type='checkbox' disabled='disabled'> <input id='id_choice4' type='text' name='choice4' maxlength='200' /></div></div>");})
 		$('#number').click(function(){
-			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='NI'/><strong>Response Type: </strong>Numeric Input <br><input type='text' name='example' id='textboxfield2'></div>");})
+			$("#choices").replaceWith("<div id='choices'><input type='hidden' name='qntype' value='NI'/><strong>Response Type: </strong>Numeric Input <br><input type='text' name='example' id='textboxfield2' readonly='readonly'/></div>");})
 		console.log('Ready');
 	});
 </script>

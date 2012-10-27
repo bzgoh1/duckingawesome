@@ -6,7 +6,6 @@
         <style type="text/css">
 <!--
 *{
-	
 	padding:0px;
 	text-decoration:none;
 }
@@ -72,9 +71,9 @@
 }
 #registerForm {
 	padding: 10px;
-	margin-top: 30px;
+	margin-top: 20px;
 	margin-left: 30px;
-	margin-bottom:30px;
+	margin-bottom:10px;
 }
 li{
 	list-style:none;
@@ -84,8 +83,11 @@ li{
 	padding-bottom:10px;
 }
 h1 {
-	padding: 10px;
-	margin-top:30px;
+	margin-left:20px;
+	margin-top: 20px;
+	font-weight:bold;
+	font-size:28px;
+}
 }
 label{
 	padding-top:5px;
@@ -100,9 +102,9 @@ label{
 span.error{
 	color:red;
 }
-.fieldWrapper{
-	padding-top:10px;
-	padding-bottom:10px;
+#registerForm table tr {
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 -->
         </style>
@@ -130,72 +132,91 @@ span.error{
 {% endif %}
 
 {{ form.non_field_errors }}
-    <div class="fieldWrapper">
-        {{ field.name.label_tag }}<label>Name</label>: {{ form.name }}
+    
+    
+<table width="500">
+  <tr><div class="fieldWrapper">
+    <td height="50">{{ field.name.label_tag }}<label>Name</label>:</td>
+    <td>{{ form.name }}
         <span class="error">
         	{% for e in form.name.errors %}
             *{{e}}
             {% endfor %}
-        </span>
-    </div>
-    <div class="fieldWrapper">
-        {{ field.username.label_tag }}<label>Username</label>: {{ form.username }}
+        </span></td>
+  </div></tr>
+  
+  <tr><div class="fieldWrapper">
+    <td height="50">{{ field.username.label_tag }}<label>Username</label>: </td>
+    <td>{{ form.username }}
         <span class="error">
         	{% for e in form.username.errors %}
             *{{e}}
             {% endfor %}
-        </span>
-    </div>
-    <div class="fieldWrapper">
-        {{ field.password.label_tag }}<label>New Password</label>: {{ form.password }}
+        </span></td></div>
+  </tr>  
+  
+  <tr><div class="fieldWrapper">
+    <td height="50">{{ field.password.label_tag }}<label>New Password</label>:</td>
+    <td>{{ form.password }}
         <span class="error">
         	{% for e in form.password.errors %}
             *{{e}}
             {% endfor %}
-        </span>
-    </div>
-    <div class="fieldWrapper">
-        {{ field.password2.label_tag }}<label>Confirm Password</label>: {{ form.password2 }}
+        </span></td></div>
+  </tr>
+  
+  <tr> <div class="fieldWrapper">
+    <td height="50">{{ field.password2.label_tag }}<label>Confirm Password</label>:</td>
+    <td>{{ form.password2 }}
         <span class="error">
         	{% for e in form.password2.errors %}
             *{{e}}
             {% endfor %}
-        </span>
-    </div>
-    <div class="fieldWrapper">
-        {{ field.email.label_tag }}<label>Email</label>: {{ form.email }}
+        </span></td></div>
+  </tr>
+  
+  <tr><div class="fieldWrapper">
+    <td height="50">{{ field.email.label_tag }}<label>Email</label>:</td>
+    <td> {{ form.email }}
         <span class="error">
         	{% for e in form.email.errors %}
             *{{e}}
             {% endfor %}
-        </span>
-    </div>
-    <div class="fieldWrapper">
-        {{ field.gender.label_tag }}<label>Gender</label>: {{ form.gender }}
+        </span></td> </div>
+  </tr>
+  
+  <tr> <div class="fieldWrapper">
+    <td height="50">{{ field.gender.label_tag }}<label>Gender</label>:</td>
+    <td>{{ form.gender }}
         <span class="error">
         	{% for e in form.gender.errors %}
             * {{e}}
             {% endfor %}
-        </span>
-    </div>
-    <div class="fieldWrapper">
-        {{ field.birhtdate.label_tag }}<label>Date of Birth</label>: {{ form.birthdate }}
+        </span></td></div>
+  </tr>
+  
+  <tr><div class="fieldWrapper">
+    <td height="50">{{ field.birhtdate.label_tag }}<label>Date of Birth</label>:</td>
+    <td>{{ form.birthdate }}
         <span class="error">
         	{% for e in form.birthdate.errors %}
             * {{e}}
             {% endfor %}
-        </span>
-    </div>
-    <div class="fieldWrapper">
-        {{ field.contactno.label_tag }}<label>Contact No.</label>: {{ form.contactno }}
+        </span></td></div>
+  </tr>
+  
+  <tr><div class="fieldWrapper">
+    <td height="50">{{ field.contactno.label_tag }}<label>Contact No.</label>:</td>
+    <td>{{ form.contactno }}
         <span class="error">
         	{% for e in form.contactno.errors %}
             *{{e}}
             {% endfor %}
-        </span>
-    </div>
+        </span></td></div>
+  </tr>
+</table>
+
 </br><input type="submit" value="Register" id="regButton"/>
-<input type="reset" value="Clear Form" id="regButton"/>
 <input type="button" value="Back to home" onClick="parent.location='../'" id="regButton">
 </form>
 

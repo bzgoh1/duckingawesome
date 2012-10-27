@@ -45,7 +45,7 @@ class UpdateForm(forms.Form):
 		widget=forms.Select, 
 		choices=[('M', 'Male'), ('F', 'Female')]
 	)
-	birthdate = forms.DateField(widget=extras.SelectDateWidget(years=range(2012,1950)))
+	birthdate = forms.DateField(widget=extras.SelectDateWidget(years=range(1950,2013)))
 	contactno = forms.IntegerField(
 		label=u'Phone number', 
 		required=False
