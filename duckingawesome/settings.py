@@ -2,7 +2,7 @@
 import os
 import sys
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 SETTINGS_DIR = os.path.abspath(os.path.dirname(__file__))
